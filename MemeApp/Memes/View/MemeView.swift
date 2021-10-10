@@ -12,6 +12,7 @@ struct MemeView: View {
     let item: Meme
 
     var body: some View {
+        Text("\(item.name)")
         Image("\(item.url)")
     }
 }
