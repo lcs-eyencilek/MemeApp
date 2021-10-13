@@ -14,31 +14,40 @@ struct MemeScreen: View {
     )
     
     var body: some View {
-        if #available(iOS 15.0, *) {
-            
-            Group {
-                if vm.memes.isEmpty {
-                    LoadingView(text: "Fetching Data")
-                } else {
-                    List {
-                        ForEach(vm.memes, id: \.id) { item in
-                            MemeView(item: item)
+        HStack {
+            Spacer()
+            if #available(iOS 15.0, *) {
+                VStack {
+                    Spacer()
+                    if vm.memeRes.data.memes.isEmpty {
+                        LoadingView(text: "Fetching Data")
+                    } else {
+                        ScrollView {
+                            ForEach(vm.memeRes.data.memes, id: \.id) { item in
+                                MemeView(item: item)
+                            }
                         }
+                    }
+                    Spacer()
+                }
+                .padding(.top)
+                .padding(.top)
+                .task {
+                    // With task method, you make the view wait for the code inside the task block to be executed before appearing, or loading
+                    await vm.getMemes()
+                }
+            } else {
+                // Fallback on earlier versions
+                List {
+                    ForEach(Meme.dummyData, id: \.id) { item in
+                        MemeView(item: item)
                     }
                 }
             }
-            .task {
-                // With task method, you make the view wait for the code inside the task block to be executed before appearing, or loading
-                await vm.getMemes()
-            }
-        } else {
-            // Fallback on earlier versions
-            List {
-                ForEach(Meme.dummyData, id: \.id) { item in
-                    MemeView(item: item)
-                }
-            }
+            Spacer()
         }
+        .background(Color.gray)
+        .edgesIgnoringSafeArea(.all)
     }
 }
 

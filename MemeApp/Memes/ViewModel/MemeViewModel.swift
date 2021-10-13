@@ -14,7 +14,7 @@ protocol ViewModelFetch: ObservableObject {
 
 @MainActor
 final class MemeViewModel: ViewModelFetch {
-    @Published private(set) var memes: [Meme] = []
+    @Published private(set) var memeRes: APIResult = APIResult(success: true, data: ResultData(memes: []))
     
     private let caller: APICaller
     
@@ -26,7 +26,7 @@ final class MemeViewModel: ViewModelFetch {
     func getMemes() async {
         do {
             // Service class is to provide the service from the endpoint (api). This one is to transfer that service data to the view.
-            self.memes = try await caller.fetch()
+            self.memeRes = try await caller.fetch()
         } catch {
             print(error)
         }

@@ -7,22 +7,26 @@
 
 import Foundation
 
-struct Meme: Codable {
+struct APIResult: Decodable {
+    var success: Bool
+    var data: ResultData
+}
+
+struct ResultData: Decodable {
+    let memes: [Meme]
+}
+
+struct Meme: Decodable {
     let id: String
     let name: String
     let url: String
-    var width: Double
-    var height: Double
-    let boxCount: Int
-    
-    mutating func adjustWidthHeight(toWidth: Double) {
-        self.height = self.height * (self.width/toWidth)
-        self.width = toWidth
-    }
+    let width: Int
+    let height: Int
+    let box_count: Int
 }
 
 extension Meme {
     static let dummyData: [Meme] = [
-        Meme(id: "444", name: "Juan", url: "https://iamnojoke.com/juan.jpg", width: 350.0, height: 500.0, boxCount: 2)
+        Meme(id: "444", name: "Juan", url: "https://iamnojoke.com/juan.jpg", width: 350, height: 500, box_count: 2)
     ]
 }

@@ -12,7 +12,15 @@ struct MemeView: View {
     let item: Meme
 
     var body: some View {
-        Text("\(item.name)")
-        Image("\(item.url)")
+        VStack(alignment: .center) {
+            Text("\(item.name)")
+                .font(.title2)
+            Image(uiImage: item.url.loadUIImage())
+                .resizable()
+                .frame(width: 300, height: 300, alignment: .center)
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(15.0)
     }
 }
