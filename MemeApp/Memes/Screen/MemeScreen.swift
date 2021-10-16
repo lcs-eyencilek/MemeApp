@@ -41,7 +41,7 @@ struct MemeScreen: View {
                                 .padding(.bottom)
                             ScrollView {
                                 LazyVGrid(columns: layout) {
-                                    ForEach(vm.memeRes.data.memes, id: \.id) { item in
+                                    ForEach(displayMemes, id: \.id) { item in
                                         MemeView(item: item, shouldShowItem: $showItem)
                                     }
                                 }
