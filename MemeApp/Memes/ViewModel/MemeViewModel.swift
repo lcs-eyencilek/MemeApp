@@ -31,4 +31,8 @@ final class MemeViewModel: ViewModelFetch {
             print(error)
         }
     }
+    
+    func filteredMemes(searchText: String) -> [Meme] {
+        return self.memeRes.data.memes.filter({ searchText.isEmpty ? true : $0.name.contains(searchText) })
+    }
 }

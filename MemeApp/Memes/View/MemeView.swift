@@ -11,7 +11,7 @@ struct MemeView: View {
     
     let item: Meme
     
-    @Binding var shouldShow: Bool
+    @Binding var shouldShowItem: Meme
 
     var body: some View {
         if #available(iOS 15.0, *) {
@@ -28,7 +28,7 @@ struct MemeView: View {
                     .cornerRadius(5.0)
             }
             .onTapGesture {
-                shouldShow = true
+                shouldShowItem = item
             }
         } else {
             // Fallback on earlier versions
@@ -43,7 +43,7 @@ struct MemeView: View {
             .cornerRadius(10.0)
             .frame(width: 150, height: 150, alignment: .center)
             .onTapGesture {
-                shouldShow = true
+                shouldShowItem = item
             }
         }
     }

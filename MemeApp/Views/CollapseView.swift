@@ -9,22 +9,30 @@ import SwiftUI
 
 struct CollapseView: View {
     
-    @Binding var isShowing: Bool
+    @Binding var isShowingItem: Meme
     
     var body: some View {
-        ZStack {
-            if (isShowing) {
+        ZStack(alignment: .bottom) {
+            if (isShowingItem.id != "") {
                 Color.black
                     .opacity(0.3)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        isShowing = false
+                        isShowingItem = Meme(id: "", name: "", url: "", width: 0, height: 0, box_count: 0)
                     }
                 
                 VStack {
-                    Text("Hello")
+                    Text("Title: \(isShowingItem.name)")
+                    Image(uiImage: isShowingItem.url.loadUIImage())
+                        .resizable()
+                        .aspectRatio(1, contentMode: .fit)
+                    Text("Width: \(isShowingItem.width)")
+                    Text("Height: \(isShowingItem.height)")
+                    Text("Box Count: \(isShowingItem.box_count)")
                 }
-                .frame(height: 400)
+                .padding()
+                .padding()
+                .frame(height: 500)
                 .frame(maxWidth: .infinity)
                 .background(Color.white)
                 .transition(.move(edge: .bottom))

@@ -12,7 +12,12 @@ struct MemeScreen: View {
     @StateObject private var vm = MemeViewModel(
         caller: APICaller()
     )
-    @State private var showCollapse = false
+    
+    @State private var displayMemes: [Meme] = []
+    
+    @State private var showItem = Meme(id: "", name: "", url: "", width: 0, height: 0, box_count: 0)
+    
+    @State var inputText: String = ""
     
     let layout: [GridItem] = [
         GridItem(.flexible(minimum: 120, maximum: 160)),
@@ -25,35 +30,39 @@ struct MemeScreen: View {
                 Spacer()
                 if #available(iOS 15.0, *) {
                     VStack {
+                        
                         Spacer()
                         
                         if vm.memeRes.data.memes.isEmpty {
                             LoadingView(text: "Fetching Data")
                         } else {
-                            ZStack {
-                                ScrollView {
-                                    LazyVGrid(columns: layout) {
-                                        ForEach(vm.memeRes.data.memes, id: \.id) { item in
-                                            MemeView(item: item, shouldShow: $showCollapse)
-                                        }
+                            SearchBar(text: $inputText, arrayChange: $displayMemes, vm: vm)
+                                .padding(.top)
+                                .padding(.bottom)
+                            ScrollView {
+                                LazyVGrid(columns: layout) {
+                                    ForEach(vm.memeRes.data.memes, id: \.id) { item in
+                                        MemeView(item: item, shouldShowItem: $showItem)
                                     }
                                 }
                             }
                         }
                         
                         Spacer()
+                        
                     }
                     .padding(.top)
                     .padding(.top)
                     .task {
                         // With task method, you make the view wait for the code inside the task block to be executed before appearing, or loading
                         await vm.getMemes()
+                        displayMemes = vm.memeRes.data.memes
                     }
                 } else {
                     // Fallback on earlier versions
                     List {
                         ForEach(Meme.dummyData, id: \.id) { item in
-                            MemeView(item: item, shouldShow: $showCollapse)
+                            MemeView(item: item, shouldShowItem: $showItem)
                         }
                     }
                 }
@@ -62,7 +71,7 @@ struct MemeScreen: View {
             .background(Color.gray)
             .edgesIgnoringSafeArea(.all)
             
-            CollapseView(isShowing: $showCollapse)
+            CollapseView(isShowingItem: $showItem)
         }
     }
 }
