@@ -13,21 +13,33 @@ struct CaptureView: View {
     
     var CaptureScreen: some View  {
         Image(uiImage: captureMeme.url.loadUIImage())
+            .resizable()
+            .aspectRatio(1, contentMode: .fit)
     }
     
     var body: some View {
-        CaptureScreen
-        
-        Button("Save to image") {
-            let image = CaptureScreen.snapshot()
+        HStack {
+            Spacer()
             
-            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            VStack {
+                Spacer()
+                  
+                HStack {
+                    CaptureScreen
+                }
+                //.frame(width: 500, height: 500, alignment: .center)
+                    Button("Save to image") {
+                        let image = CaptureScreen.snapshot()
+                        
+                        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                    }
+                    .font(.title2)
+                Spacer()
+            }
+            
+            Spacer()
         }
     }
-}
-
-extension View {
-    
 }
 
 //struct CaptureView_Previews: PreviewProvider {

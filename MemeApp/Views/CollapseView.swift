@@ -29,6 +29,10 @@ struct CollapseView: View {
                     Text("Width: \(isShowingItem.width)")
                     Text("Height: \(isShowingItem.height)")
                     Text("Box Count: \(isShowingItem.box_count)")
+                    NavigationLink(destination: CaptureView(captureMeme: isShowingItem)) {
+                        Text("Finalize")
+                            .font(.title2)
+                    }
                 }
                 .padding()
                 .padding()

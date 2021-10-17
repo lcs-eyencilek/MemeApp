@@ -9,8 +9,6 @@ import SwiftUI
 
 struct MemeScreen: View {
     
-    @Binding var selectedItem: Meme
-    
     @ObservedObject var vm = MemeViewModel(
         caller: APICaller()
     )
@@ -38,9 +36,6 @@ struct MemeScreen: View {
                         if vm.memeRes.data.memes.isEmpty {
                             LoadingView(text: "Fetching Data")
                         } else {
-                            SearchBar(text: $inputText, arrayChange: $displayMemes, vm: vm)
-                                .padding(.top)
-                                .padding(.bottom)
                             ScrollView {
                                 LazyVGrid(columns: layout) {
                                     ForEach(displayMemes, id: \.id) { item in
@@ -48,12 +43,15 @@ struct MemeScreen: View {
                                     }
                                 }
                             }
+                            .padding(.top, 50)
+                            SearchBar(text: $inputText, arrayChange: $displayMemes, vm: vm)
+                                .padding(.bottom, 75)
+                                .padding(.top, 25)
                         }
                         
                         Spacer()
                         
                     }
-                    .padding(.top)
                     .padding(.top)
                     .task {
                         // With task method, you make the view wait for the code inside the task block to be executed before appearing, or loading
